@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1500"
+   height="900"
+   id="svg9824"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="japan.svg"
+   inkscape:export-filename="C:\Users\Public\Projects\ProjectsFY2011\p026_FlagBazaar2011\Graphics\SVG\World\Asia\japan.png"
+   inkscape:export-xdpi="24"
+   inkscape:export-ydpi="24">
+  <metadata
+     id="metadata9834">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs9832" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="988"
+     id="namedview9830"
+     showgrid="false"
+     inkscape:zoom="0.62775369"
+     inkscape:cx="680.68398"
+     inkscape:cy="387.58958"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg9824" />
+  <rect
+     height="899.29199"
+     width="1499.4608"
+     id="rect9826"
+     x="0.24940999"
+     y="0.45861"
+     style="fill:#ffffff;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  <circle
+     d="m 630,300 c 0,99.41125 -80.58875,180 -180,180 -99.41125,0 -180,-80.58875 -180,-180 0,-99.41125 80.58875,-180 180,-180 99.41125,0 180,80.58875 180,180 z"
+     cx="450"
+     cy="300"
+     r="180"
+     id="circle9828"
+     sodipodi:cx="450"
+     sodipodi:cy="300"
+     sodipodi:rx="180"
+     sodipodi:ry="180"
+     style="fill:#be0026"
+     transform="matrix(1.49882,0,0,1.49882,75.510818,0.45860609)" />
+</svg>
