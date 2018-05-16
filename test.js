@@ -5,7 +5,7 @@ const neb = new Nebulas.Neb();
 neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 
 const address = "n1NEYDpueKsMuy6M3wCThTXwCr6NuCqGS7n";
-const contractAddress = "n1pwyHjaZe1UEJVh8LzagbpuqJESWv6BRgp";
+const contractAddress = "n1zQkQPVYW9UGb7YRxtdjkW4NcZn26QhhW7";
 
 neb.api.getAccountState(address).then(function (state) {
     console.log(state);
