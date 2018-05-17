@@ -1,3 +1,5 @@
+// neb.js api 文档地址 https://nebulasio.github.io/neb.js/index.html
+
 const Nebulas = require("nebulas");
 const BigNumber = require("bignumber.js");
 
@@ -149,7 +151,7 @@ function getBalance() {
 }
 
 // 获取国家列表
-// getCountries();
+getCountries();
 // 提交竞猜信息
 // addLottery();
 // 获取所有竞猜列表
