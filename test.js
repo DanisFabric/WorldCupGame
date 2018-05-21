@@ -50,8 +50,10 @@ function getCountries() {
 function addLottery() {
     neb.api.getAccountState(testAccounts[0].address).then (function (state) {
        console.log(state);
-       const account = Nebulas.Account.fromAddress(testAccounts[0].address);
-       account.setPrivateKey(testAccounts[0].privateKey);
+       // const account = Nebulas.Account.fromAddress(testAccounts[0].address);
+       // account.setPrivateKey(testAccounts[0].privateKey);
+
+        const account = new Nebulas.Account(new Buffer(testAccounts[0].privateKey, "hex"));
 
         const tx = new Nebulas.Transaction({
             chainID: 1001,
@@ -151,9 +153,9 @@ function getBalance() {
 }
 
 // 获取国家列表
-getCountries();
+// getCountries();
 // 提交竞猜信息
-// addLottery();
+addLottery();
 // 获取所有竞猜列表
 // getAllLotteries();
 // 获得当前合约总竞猜金额
