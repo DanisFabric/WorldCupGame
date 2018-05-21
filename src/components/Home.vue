@@ -5,7 +5,7 @@
         <img src="../assets/main-logo.png" alt="" class="main-logo">
         <div class="subtitle">基于区块链的透明公开的足球竞猜</div>
         <div class="buttons">
-          <div class="btn btn-left" :style="mainLeftBtnStyle">立即参与</div>
+          <div class="btn btn-left" :style="mainLeftBtnStyle" @click="openAddLotteryModal">立即参与</div>
           <div class="btn btn-left" :style="mainRightBtnStyle">我的竞猜</div>
         </div>
         <div class="count-down">{{ countdown }}</div>
@@ -60,6 +60,11 @@ export default {
   //     mainBackground,
   //   };
   // },
+  methods: {
+    openAddLotteryModal() {
+      this.$store.commit('openAddLotteryModal');
+    },
+  },
   computed: {
     mainStyle() {
       return `background-image: url(${mainBackground})`;

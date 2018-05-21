@@ -1,18 +1,22 @@
 <template>
   <div id="app">
-    <navigator />
-    <router-view/>
-    <page-footer />
+    <div class="app-container">
+      <navigator />
+      <router-view/>
+      <page-footer />
+    </div>
+    <add-lottery-modal></add-lottery-modal>
   </div>
 </template>
 
 <script>
 import Navigator from './components/Navigator.vue';
 import PageFooter from './components/Footer.vue';
+import AddLotteryModal from './components/AddLotteryModal.vue';
 
 export default {
   name: 'App',
-  components: { Navigator, PageFooter },
+  components: { Navigator, PageFooter, AddLotteryModal },
 };
 </script>
 
@@ -32,11 +36,24 @@ html, body {
   background-color: #BBFF33;
   color: #ffffff;
 }
-#app {
+#app, .app-container {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   width: 100%;
   height: 100%;
 }
+
+.app-container{
+  overflow-y: scroll;
+}
+
 .container {
   margin: 0 auto;
   width: 960px;
