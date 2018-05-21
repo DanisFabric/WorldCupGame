@@ -24,6 +24,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 100%;
   min-width: 960px;
   font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -34,6 +35,7 @@ html, body {
 #app {
   margin: 0 auto;
   width: 100%;
+  height: 100%;
 }
 .container {
   margin: 0 auto;

@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "bignumber.js": "^7.1.0",
     "body-parser": "^1.18.2",
     "change-case": "^3.0.2",
     "moment": "^2.22.1",

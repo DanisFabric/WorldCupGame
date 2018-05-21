@@ -5,10 +5,10 @@
         <p>《FIFA 18》採用了全新動作系統「真實球員動作科技」，使本遊戲系列大大地踏出創新一步。真實球員動作科技帶來了前所未有的靈敏反應，並且鮮明地展現出球員個性。現在，Cristiano Ronaldo以及其他頂尖球員的一舉一動都將栩栩如真。</p>
       </div>
       <div class="list">
-        <div class="item" v-for="item in situation" :key="item.countryName">
-          <div class="country">
-            <img class="flag" :src="item.countryFlag" />
-            <div class="name">{{ item.countryName }}</div>
+        <div class="item" v-for="item in situation" :key="item.teamName">
+          <div class="team">
+            <img class="flag" :src="item.teamFlag" />
+            <div class="name">{{ item.teamName }}</div>
           </div>
           <div class="progress-container">
             <div class="progress">  
@@ -32,30 +32,19 @@
 /* eslint global-require: 0 */
 
 import numeral from 'numeral';
-
-const countries = {
-  GERMA: {
-    name: '德国', flag: require('../assets/flags/de.svg'),
-  },
-  BRAZI: {
-    name: '巴西', flag: require('../assets/flags/br.svg'),
-  },
-  FRANC: {
-    name: '法国', flag: require('../assets/flags/fr.svg'),
-  },
-};
+import { teams } from '../worldcup';
 
 export default {
   computed: {
     situation() {
       const data = [
-        { country: countries.GERMA, progress: 0.945 },
-        { country: countries.BRAZI, progress: 0.565 },
-        { country: countries.FRANC, progress: 0.345 },
+        { team: teams.de, progress: 0.945 },
+        { team: teams.br, progress: 0.565 },
+        { team: teams.fr, progress: 0.345 },
       ];
       const res = data.map(item => ({
-        countryName: item.country.name,
-        countryFlag: item.country.flag,
+        teamName: item.team.name,
+        teamFlag: item.team.flag,
         progressText: numeral(item.progress).format('0.0%'),
         progressStyle: `width: ${numeral(item.progress).format('0.0%')}`,
       }));
@@ -84,7 +73,7 @@ export default {
     height: 130px;
   }
 
-  .country {
+  .team {
     padding-top: 30px;
     display: flex;
     flex-flow: column;
@@ -97,7 +86,7 @@ export default {
     height: 57px;
     border-radius: 8px;
   }
-  .country .name {
+  .team .name {
     margin-top: 8px;
   }
 
