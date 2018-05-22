@@ -33,8 +33,17 @@
 
 import numeral from 'numeral';
 import { teams } from '../worldcup';
+import { getCountries } from '../api/index';
 
 export default {
+  mounted() {
+    const start = Date.now();
+    getCountries().then((res) => {
+      console.log(res);
+      console.log(Date.now() - start);
+    });
+  },
+
   computed: {
     situation() {
       const data = [
