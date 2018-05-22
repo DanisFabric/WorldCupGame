@@ -29,10 +29,17 @@
         </div>
       </section>
       <section class="account">
-        <div class="btn account">导入账户文件</div>
+        <div class="input-group">
+          <input type="text" class="privatekey" placeholder="请输入您的 NAS 密钥">
+          <button>确定</button>
+        </div>
         <input type="text" class="lottery" placeholder="输入投注金额 0.01 ~ 100 NAS">
       </section>
-      <footer></footer>
+      <footer>
+        <div class="submit" :style="modalSubmitStyle">
+          <span>立即参与</span>
+        </div>
+      </footer>
     </div>
   </div>
 </template>
@@ -40,6 +47,7 @@
 import { groups } from '../worldcup';
 import modalTitleBackground from '../assets/modal-title.png';
 import modalCloseBackground from '../assets/modal-close.png';
+import modalSubmitBackground from '../assets/modal-submit.png';
 
 const values = require('lodash/values');
 
@@ -95,6 +103,9 @@ export default {
     },
     modalCloseStyle() {
       return `background-image: url("${modalCloseBackground}")`;
+    },
+    modalSubmitStyle() {
+      return `background-image: url("${modalSubmitBackground}")`;
     },
   },
 };
@@ -198,10 +209,10 @@ export default {
           }
 
           &.selected {
-            background-color: fadeout(#E6D3A6, 30%);
+            background-color: fadeout(#E6D3A6, 20%);
           }
-          &:hover {
-            background-color: fadeout(#E6D3A6, 50%);
+          &:not(.selected):hover {
+            background-color: fadeout(#E6D3A6, 60%);
           }
         }
       }
@@ -210,22 +221,87 @@ export default {
     section.account {
       padding: 64px;
 
-      input.lottery {
-        display: block;
+      .input-group {
+        display: flex;
         margin: 0 auto;
         width: 370px;
-        height: 64px;
+        height: 50px;
+        border: 2px solid #E6D3A6;
+        box-sizing: border-box;
+        font-size: 20px;
+        text-align: center;
+
+        input.privatekey {
+          flex: 1;
+          display: block;
+          height: 100%;
+          -webkit-appearance: none;
+          outline: none;
+          border: none;
+          box-sizing: border-box;
+          font-size: 20px;
+          text-align: center;
+        
+          &::-webkit-input-placeholder { color: #CCCCCC; }
+          &:-ms-input-placeholder { color: #CCCCCC; }
+          &::-moz-placeholder { color: #CCCCCC; }
+          &:-moz-placeholder { color: #CCCCCC; }
+        }
+
+        button {
+          width: 100px;
+          background-color: #E6D3A6;
+          -webkit-appearance: none;
+          outline: none;
+          border: none;
+          font-size: 20px;
+          text-align: center;
+
+          &:active {
+            background-color: darken(#E6D3A6, 10%);
+          }
+        }
+      }
+
+      input.lottery {
+        display: block;
+        margin: 30px auto 0;
+        width: 370px;
+        height: 50px;
         -webkit-appearance: none;
         outline: none;
         border: 2px solid #E6D3A6;
         box-sizing: border-box;
-        font-size: 24px;
+        font-size: 20px;
         text-align: center;
        
         &::-webkit-input-placeholder { color: #CCCCCC; }
         &:-ms-input-placeholder { color: #CCCCCC; }
         &::-moz-placeholder { color: #CCCCCC; }
         &:-moz-placeholder { color: #CCCCCC; }
+      }
+    }
+
+    footer {
+      height: 96px;
+      background-color: #1A1A1A;
+      display: flex;
+      justify-content: flex-end;
+
+      .submit {
+        width: 276px;
+        height: 96px;
+        background-size: cover;
+        background-position: center;
+        padding-left: 40px;
+        user-select: none;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 30px;
       }
     }
   }

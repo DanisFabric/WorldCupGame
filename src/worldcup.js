@@ -195,6 +195,13 @@ export const teams = {
   },
 };
 
+export const teamKeys = [
+  'ru', 'sa', 'eg', 'uy', 'pt', 'es', 'ma', 'ir',
+  'fr', 'au', 'pe', 'dk', 'ar', 'is', 'hr', 'ng',
+  'br', 'ch', 'cr', 'rs', 'de', 'mx', 'se', 'kr',
+  'be', 'pa', 'tn', 'en', 'pl', 'sn', 'co', 'jp',
+];
+
 export const groups = {
   a: { key: 'a', name: 'A组', teams: [teams.ru, teams.sa, teams.eg, teams.uy] },
   b: { key: 'b', name: 'B组', teams: [teams.pt, teams.es, teams.ma, teams.ir] },

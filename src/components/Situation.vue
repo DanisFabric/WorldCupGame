@@ -4,11 +4,11 @@
       <div class="description">
         <p>《FIFA 18》採用了全新動作系統「真實球員動作科技」，使本遊戲系列大大地踏出創新一步。真實球員動作科技帶來了前所未有的靈敏反應，並且鮮明地展現出球員個性。現在，Cristiano Ronaldo以及其他頂尖球員的一舉一動都將栩栩如真。</p>
       </div>
-      <div class="list">
-        <div class="item" v-for="item in situation" :key="item.teamName">
+      <div class="list" v-if="loaded">
+        <div class="item" v-for="item in data" :key="item.name">
           <div class="team">
-            <img class="flag" :src="item.teamFlag" />
-            <div class="name">{{ item.teamName }}</div>
+            <img class="flag" :src="item.flag" />
+            <div class="name">{{ item.name }}</div>
           </div>
           <div class="progress-container">
             <div class="progress">  
@@ -25,23 +25,52 @@
           </div>
         </div>
       </div>
+      <div class="list loading" v-else>
+        <spinner
+          :animation-duration="2000"
+          :size="65"
+          color="#BBFF33"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script>
 /* eslint global-require: 0 */
 
+import _ from 'lodash';
 import numeral from 'numeral';
+import { BreedingRhombusSpinner } from 'epic-spinners';
 import { teams } from '../worldcup';
-import { getCountries } from '../api/index';
+import { getCountriesBalances } from '../api/index';
+
 
 export default {
+  components: { Spinner: BreedingRhombusSpinner },
   mounted() {
-    const start = Date.now();
-    getCountries().then((res) => {
-      console.log(res);
-      console.log(Date.now() - start);
-    });
+    this.loaded = false;
+    getCountriesBalances()
+      .then((data) => {
+        this.loaded = true;
+        const prettyData = _(data).orderBy(['percentage', 'index'], ['desc', 'asc'])
+          .value()
+          .map((item) => {
+            const extra = {};
+            extra.progressText = numeral(item.percentage).format('0.0%');
+            extra.progressStyle = `width: ${extra.progressText}`;
+            return Object.assign(extra, item);
+          });
+        this.data.length = 0;
+        this.data.push(...prettyData);
+        console.log(data, prettyData, this.data.length);
+      });
+  },
+
+  data() {
+    return {
+      loaded: false,
+      data: [],
+    };
   },
 
   computed: {
@@ -77,6 +106,13 @@ export default {
     }
   }
 
+  .list.loading {
+    height: 390px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .item {
     display: flex;
     height: 130px;
@@ -105,7 +141,7 @@ export default {
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    height: 120px;
+    height: 130px;
 
     .progress, .progress-bar, .progress-bar img {
       width: 624px;

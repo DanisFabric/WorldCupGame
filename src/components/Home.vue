@@ -55,11 +55,6 @@ const hourLength = 3600000;
 const dayLength = 86400000;
 
 export default {
-  // data() {
-  //   return {
-  //     mainBackground,
-  //   };
-  // },
   methods: {
     openAddLotteryModal() {
       this.$store.commit('openAddLotteryModal');
