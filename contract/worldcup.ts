@@ -91,8 +91,6 @@ class WorldCupGame {
             }
         });
         LocalContractStorage.defineMapProperty(this, "countryBalanceMap", null);
-        LocalContractStorage.defineProperty(this, "log");
-
     }
 
     init() {
@@ -102,6 +100,7 @@ class WorldCupGame {
         this.deadlineDate = (new Date(2018, 6, 13, 0, 0, 0)).getTime();
         this.resultDate = (new Date(2018, 7, 20, 0, 0, 0)).getTime();
 
+        this.bonusDistributionIndex = 0;
         this.lotteryLastIndex = 0;
         this.countryLastIndex = 32;
 
@@ -141,9 +140,6 @@ class WorldCupGame {
         for (let index = 0; index < 32; index ++) {
             this.countryBalanceMap.set(index, "0");
         }
-    }
-    getLog() {
-        return this.log;
     }
     // 读取截止时间
     getDeadline() {
@@ -242,9 +238,6 @@ class WorldCupGame {
     }
 
     getBonusDistribution() {
-        // if (Date.now < this.getResultDate) {
-        //     throw new Error("还未到开奖日期，请稍后查看");
-        // }
         let arr = new Array();
         let bonusCount = this.bonusDistributionIndex;
         for (let index = 0; index < bonusCount; index ++) {
@@ -262,9 +255,9 @@ class WorldCupGame {
         if (Blockchain.transaction.from != this.ownerAddress) {
             throw new Error("你不是合约拥有者");
         }
-        // if (Date.now() < this.resultDate) {
-        //     throw new Error("还未到开奖时间");
-        // }
+        if (Date.now() < this.resultDate) {
+            throw new Error("还未到开奖时间");
+        }
         let championCountry = this.countries.get(countryIndex);
         if (championCountry.nameZh != nameZh || championCountry.nameEn != nameEn) {
             throw new Error("国家序号和名称不匹配");
@@ -289,14 +282,16 @@ class WorldCupGame {
         if (championLotteries.length === 0) {
             Blockchain.transfer(this.ownerAddress, restBalance);
         }  else {
-            championLotteries.forEach(function (lottery) {
-                let proportion = lottery.value.div(championBalance);
+            for (let lottery of championLotteries) {
+                let base = new BigNumber(lottery.value);
+                let proportion = base.div(championBalance);
                 let bonus = restBalance.times(proportion);
 
-                Blockchain.transfer(lottery.address, bonus);
                 this.bonusDistribution.set(this.bonusDistributionIndex, new Bonus(lottery.address, bonus.toString()));
                 this.bonusDistributionIndex += 1;
-            });
+
+                Blockchain.transfer(lottery.address, bonus);
+            }
         }
     }
 }
