@@ -9,7 +9,7 @@
     "bignumber.js": "^7.1.0",
     "body-parser": "^1.18.2",
     "change-case": "^3.0.2",
-    "epic-spinners": "^1.0.2",
+    "epic-spinners": "^1.0.3",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "nebulas": "^0.4.8",

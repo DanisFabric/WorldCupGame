@@ -27,17 +27,17 @@
         <div class="feature">
           <img class="feature-logo" src="../assets/feature-transparent.png" alt="transparent">
           <div class="feature-title">公开透明</div>
-          <div class="feature-subtitle">追溯查询竞猜信息</div>
+          <div class="feature-subtitle">信息存储于区块链，完全公开</div>
         </div>
         <div class="feature">
           <img class="feature-logo" src="../assets/feature-unmodifiable.png" alt="unmodifiable">
-          <div class="feature-title">无法篡改</div>
-          <div class="feature-subtitle">竞猜情况无法被他人修改</div>
+          <div class="feature-title">不可篡改</div>
+          <div class="feature-subtitle">竞猜信息无法被他人篡改</div>
         </div>
         <div class="feature">
           <img class="feature-logo" src="../assets/feature-fair.png" alt="fair">
           <div class="feature-title">公平</div>
-          <div class="feature-subtitle">无赔率动态计算获取奖金</div>
+          <div class="feature-subtitle">获奖赔率根据算法动态计算</div>
         </div>
       </div>
     </section>

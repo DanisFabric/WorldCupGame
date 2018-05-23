@@ -210,6 +210,7 @@ function setChampion() {
   });
 }
 
+// 获得开奖结果，这个是随着设置冠军把钱发了之后，才生成的数据
 function getBonusDistribution() {
   neb.api.getAccountState(testAccounts[0].address).then((state) => {
     console.log(state);
