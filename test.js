@@ -268,7 +268,7 @@ function testAccount() {
 }
 
 // 获取国家列表
-// getCountries();
+getCountries();
 
 // 提交竞猜信息
 // addLottery();
@@ -288,4 +288,4 @@ function testAccount() {
 // 获取奖金分配
 // getBonusDistribution();
 
-testAccount();
+// testAccount();
