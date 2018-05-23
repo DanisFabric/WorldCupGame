@@ -257,11 +257,21 @@ function getBonusDistribution() {
   });
 }
 
+function testAccount() {
+  let account = Nebulas.Account.NewAccount();
+  console.log(account.getAddressString());
+  console.log(account.getPrivateKeyString());
+  account.fromKey('{"version":4,"id":"cdb70f51-0a65-4960-a00d-79f6eef79e94","address":"n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy","crypto":{"ciphertext":"a5b4848a4d52f50857bcd918d3a0d8ee9b57303f53f9fdd1006479c27d108e9b","cipherparams":{"iv":"731d38dbc7375d724956e9ea06da6900"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"bce075d7fa8342f959a676cb14eaa1eb8f23b702ae6ab5ec2faf0639394beb16","n":4096,"r":8,"p":1},"mac":"595a5565cfe55ffb5b23f50bff64b3049cde2efe07ff18c90f1c61acc5856eac","machash":"sha3256"}}', "passphrase")
+  neb.api.getAccountState(account.getAddressString()).then((state) => {
+    console.log(state);
+  });
+}
+
 // 获取国家列表
 // getCountries();
 
 // 提交竞猜信息
-addLottery();
+// addLottery();
 
 // 获取所有竞猜列表
 // getAllLotteries();
@@ -277,3 +287,5 @@ addLottery();
 
 // 获取奖金分配
 // getBonusDistribution();
+
+testAccount();
