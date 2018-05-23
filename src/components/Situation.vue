@@ -2,7 +2,7 @@
   <div id="situation">
     <div class="container">
       <div class="description">
-        <p>《FIFA 18》採用了全新動作系統「真實球員動作科技」，使本遊戲系列大大地踏出創新一步。真實球員動作科技帶來了前所未有的靈敏反應，並且鮮明地展現出球員個性。現在，Cristiano Ronaldo以及其他頂尖球員的一舉一動都將栩栩如真。</p>
+        <p>当前各国家队的支持情况，柱状图为您提供了不同国家的竞猜资金占总资金的比例</p>
       </div>
       <div class="list" v-if="loaded">
         <div class="item" v-for="item in data" :key="item.name">

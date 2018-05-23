@@ -2,7 +2,7 @@
   <div id="data-list">
     <div class="container">
       <div class="description">
-        <p>《FIFA 18》採用了全新動作系統「真實球員動作科技」，使本遊戲系列大大地踏出創新一步。真實球員動作科技帶來了前所未有的靈敏反應，並且鮮明地展現出球員個性。現在，Cristiano Ronaldo以及其他頂尖球員的一舉一動都將栩栩如真。</p>
+        <p>您能够在当前页面查询到所有的竞猜信息。并且所有数据存储于区块链，本网站无法改动竞猜数据。</p>
       </div>
       <table>
         <thead>

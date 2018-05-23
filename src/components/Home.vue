@@ -15,7 +15,7 @@
       <div class="container">
         <img class="fifa-logo" src="../assets/fifa2018.png" alt="FIFA 2018">
         <div class="section-title">竞猜规则</div>
-        <div class="rule-content">《FIFA 18》採用了全新動作系統「真實球員動作科技」，使本遊戲系列大大地踏出創新一步。真實球員動作科技帶來了前所未有的靈敏反應，並且鮮明地展現出球員個性。現在，Cristiano Ronaldo以及其他頂尖球員的一舉一動都將栩栩如真。</div>
+        <div class="rule-content">1. 所有用户的竞猜金额作为奖池，当你所支持的球队获得2018届世界杯冠军，你则与其他同时投注该球队的用户，按照投入NAS比例，瓜分奖池所有奖金。<br/>2. 同一地址不能多次参与竞猜，竞猜金额限制 0.01NAS - 100NAS<br/>3. 本网站将会扣取5%的奖金作为手续费。开奖后，奖金会自动转账到获奖账户。</div>
         <div class="rule-bottom">
           <img src="../assets/rule-bottom.png" alt="- -- -------------">
         </div>
