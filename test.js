@@ -48,18 +48,20 @@ function getCountries() {
 }
 
 function addLottery() {
-  neb.api.getAccountState(testAccounts[0].address).then((state) => {
+
+  // const account = Nebulas.Account.fromAddress(testAccounts[0].address);
+  // account.setPrivateKey(testAccounts[0].privateKey);
+
+  const account = new Nebulas.Account(new Buffer("861ec7e9df55736b5a0caf60a9380a344b88e1aa804f3ee18d644d07d816b7e1", 'hex'));
+  
+  neb.api.getAccountState(account.getAddressString()).then((state) => {
     console.log(state);
-    // const account = Nebulas.Account.fromAddress(testAccounts[0].address);
-    // account.setPrivateKey(testAccounts[0].privateKey);
-
-    const account = new Nebulas.Account(new Buffer(testAccounts[0].privateKey, 'hex'));
-
-    const tx = new Nebulas.Transaction({
+    
+    neb.api.call({
       chainID: 1001,
-      from: account,
+      from: account.getAddressString(),
       to: contractAddress,
-      value: nasToWei(0.1),
+      value: nasToWei(0.01),
       nonce: parseInt(state.nonce) + 1,
       gasPrice: 1000000,
       gasLimit: 2000000,
@@ -67,19 +69,40 @@ function addLottery() {
         function: 'addLottery',
         args: '["17"]',
       },
-    });
-    tx.signTransaction();
-    neb.api.sendRawTransaction({
-      data: tx.toProtoString(),
-    }).then((hash) => {
-      console.log('发送成功');
-      console.log(hash);
-    }).catch((reason) => {
-      console.log('出错了');
-      console.log(reason);
+    }).then((x) => {
+      console.log(x);
+      if (x.execute_err != null && x.execute_err != "") {
+        console.log("调用出错了，不进行transaction");
+        return ;
+      } 
+      const tx = new Nebulas.Transaction({
+        chainID: 1001,
+        from: account,
+        to: contractAddress,
+        value: nasToWei(0.01),
+        nonce: parseInt(state.nonce) + 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+          function: 'addLottery',
+          args: '["17"]',
+        },
+      });
+      tx.signTransaction();
+      neb.api.sendRawTransaction({
+        data: tx.toProtoString(),
+      }).then((hash) => {
+        console.log('发送成功');
+        console.log(hash);
+      }).catch((reason) => {
+        console.log('出错了');
+        console.log(reason);
+      });
+    }).catch((err) => {
+      console.log(err);
     });
   }).catch((err) => {
-    console.log(err);
+      console.log(err);
   });
 }
 
@@ -238,7 +261,7 @@ function getBonusDistribution() {
 // getCountries();
 
 // 提交竞猜信息
-// addLottery();
+addLottery();
 
 // 获取所有竞猜列表
 // getAllLotteries();
@@ -254,5 +277,3 @@ function getBonusDistribution() {
 
 // 获取奖金分配
 // getBonusDistribution();
-
-// getLog();
