@@ -30,7 +30,7 @@
       </section>
       <section class="account">
         <div class="input-group">
-          <input type="text" class="privatekey" placeholder="请输入您的 NAS 密钥">
+          <input type="text" class="privatekey" placeholder="请输入您的 NAS 私钥">
           <button>确定</button>
         </div>
         <input type="text" class="lottery" placeholder="输入投注金额 0.01 ~ 100 NAS">
