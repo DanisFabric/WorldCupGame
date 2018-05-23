@@ -8,7 +8,7 @@ const neb = new Nebulas.Neb();
 neb.setRequest(new Nebulas.HttpRequest('https://testnet.nebulas.io'));
 
 const address = '';
-const contractAddress = 'n1zzniVioVyqb1cRud8frqM3f1nVo7pPc4Q';
+const contractAddress = 'n1pxeAUnFcihueWdhmMTBdNQZLpyepgeYNf';
 
 const testAccounts = [
   { address: 'n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy', privateKey: '608c2daab9859ae9793aadd2432236df4587803d2b2cf6f37415751ea6b72b1d' },
@@ -152,11 +152,104 @@ function getBalance() {
   });
 }
 
+function searchLottery() {
+  // n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy
+  neb.api.getAccountState(testAccounts[0].address).then((state) => {
+    console.log(state);
+    neb.api.call({
+      chainID: 1001,
+      from: testAccounts[0].address,
+      to: contractAddress,
+      value: 0,
+      nonce: parseInt(state.nonce) + 1,
+      gasPrice: 1000000,
+      gasLimit: 2000000,
+      contract: {
+        function: 'getLottery',
+        args: '["n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy"]',
+      },
+    }).then((x) => {
+      console.log(x);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+}
+
+function setChampion() {
+  const account = new Nebulas.Account("861ec7e9df55736b5a0caf60a9380a344b88e1aa804f3ee18d644d07d816b7e1", 'hex');
+  neb.api.getAccountState(account.getAddressString()).then((state) => {
+    console.log(state);
+
+
+    const tx = new Nebulas.Transaction({
+      chainID: 1001,
+      from: account,
+      to: contractAddress,
+      value: 0,
+      nonce: parseInt(state.nonce) + 1,
+      gasPrice: 1000000,
+      gasLimit: 2000000,
+      contract: {
+        function: 'setChampion',
+        args: '["17", "Switzerland", "瑞士"]',
+      },
+    });
+    tx.signTransaction();
+    neb.api.sendRawTransaction({
+      data: tx.toProtoString(),
+    }).then((hash) => {
+      console.log('发送成功');
+      console.log(hash);
+    }).catch((reason) => {
+      console.log('出错了');
+      console.log(reason);
+    });
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+function getBonusDistribution() {
+  neb.api.getAccountState(testAccounts[0].address).then((state) => {
+    console.log(state);
+    neb.api.call({
+      chainID: 1001,
+      from: testAccounts[0].address,
+      to: contractAddress,
+      value: 0,
+      nonce: parseInt(state.nonce) + 1,
+      gasPrice: 1000000,
+      gasLimit: 2000000,
+      contract: {
+        function: 'getBonusDistribution',
+        args: '',
+      },
+    }).then((x) => {
+      console.log(x);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+}
+
 // 获取国家列表
-getCountries();
+// getCountries();
+
 // 提交竞猜信息
 // addLottery();
+
 // 获取所有竞猜列表
 // getAllLotteries();
+
 // 获得当前合约总竞猜金额
 // getBalance();
+
+// 根据address搜索lottery
+// searchLottery();
+
+// 设置冠军
+// setChampion();
+
+// 获取奖金分配
+getBonusDistribution();
