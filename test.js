@@ -129,6 +129,29 @@ function getAllLotteries() {
   });
 }
 
+function getLotteries() {
+  neb.api.getAccountState(testAccounts[0].address).then((state) => {
+    console.log(state);
+    neb.api.call({
+      chainID: 1001,
+      from: testAccounts[0].address,
+      to: contractAddress,
+      value: 0,
+      nonce: parseInt(state.nonce) + 1,
+      gasPrice: 1000000,
+      gasLimit: 2000000,
+      contract: {
+        function: 'getLotteries',
+        args: '[3,0]',
+      },
+    }).then((x) => {
+      console.log(x);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+}
+
 function getCountryBalanceMap() {
   neb.api.getAccountState(testAccounts[0].address).then((state) => {
     console.log(state);
@@ -268,7 +291,7 @@ function testAccount() {
 }
 
 // 获取国家列表
-getCountries();
+// getCountries();
 
 // 提交竞猜信息
 // addLottery();
@@ -289,3 +312,4 @@ getCountries();
 // getBonusDistribution();
 
 // testAccount();
+getLotteries();
