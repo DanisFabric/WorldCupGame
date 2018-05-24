@@ -8,7 +8,7 @@ const neb = new Nebulas.Neb();
 neb.setRequest(new Nebulas.HttpRequest('https://testnet.nebulas.io'));
 
 const address = '';
-const contractAddress = 'n1m4HMV8jkje5eBwZ3cSVtJuUEnoiBJt4q5';
+const contractAddress = 'n1qZmctYGY1jXcxJMvYyzZZtKrjSZqLbrYD';
 
 const testAccounts = [
   { address: 'n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy', privateKey: '608c2daab9859ae9793aadd2432236df4587803d2b2cf6f37415751ea6b72b1d' },
