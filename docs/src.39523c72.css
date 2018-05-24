@@ -558,6 +558,7 @@ code[data-v-255d0e] {
   border: none;
   font-size: 20px;
   text-align: center;
+  user-select: none;
 }
 .overlay .modal section.account .submit button[data-v-b2a444]:active {
   background-color: #dbbf7e;
@@ -1985,6 +1986,19 @@ to { transform: rotate(360deg);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+#data-list .list.loading button[data-v-8ce3f9] {
+  width: 300px;
+  height: 50px;
+  background-color: #E6D3A6;
+  -webkit-appearance: none;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+}
+#data-list .list.loading button[data-v-8ce3f9]:active {
+  background-color: #dbbf7e;
 }
 #data-list .description[data-v-8ce3f9] {
   margin-bottom: 39px;

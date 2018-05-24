@@ -44,7 +44,8 @@
         </table>
       </div>
       <div class="list loading" :style="listStyle" v-else>
-        <spinner
+        <button v-if="error">重新加载数据</button>
+        <spinner v-else
           :animation-duration="2000"
           :size="65"
           color="#BBFF33"
@@ -98,9 +99,17 @@ export default {
       }
     },
   },
+  data() {
+    return {
+      list: null,
+      count: 0,
+      error: null,
+    };
+  },
   methods: {
     load() {
       this.list = null;
+      this.error = null;
       getLotteryList(this.page, pageSize).then(({ lotteries, count }) => {
         this.count = count;
         this.list = lotteries.map(item => ({
@@ -111,15 +120,11 @@ export default {
           time: moment(item.timestamp).format('YYYY-MM-DD'),
         }));
       }).catch((err) => {
+        this.error = err;
         message.error(`加载数据列表失败 (${err.message})`);
+        console.error(err);
       });
     },
-  },
-  data() {
-    return {
-      list: null,
-      count: 0,
-    };
   },
   computed: {
     listStyle() {
@@ -164,6 +169,21 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    button {
+      width: 300px;
+      height: 50px;
+      background-color: #E6D3A6;
+      -webkit-appearance: none;
+      outline: none;
+      border: none;
+      font-size: 20px;
+      text-align: center;
+
+      &:active {
+        background-color: darken(#E6D3A6, 10%);
+      }
+    }
   }
 
   .description {

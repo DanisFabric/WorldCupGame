@@ -67,6 +67,7 @@ export default {
       }).catch((err) => {
         this.loaded = true;
         message.error(`加载球队数据失败 (${err.message})`);
+        console.error(err);
       });
   },
 

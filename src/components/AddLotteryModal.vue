@@ -200,7 +200,6 @@ export default {
         message.error('竞猜金额已超过您的账户余额');
         return;
       }
-      console.log('addLottery');
       this.loading = true;
       addLottery(this.teamKey, this.accountState.account, lottery).then((res) => {
         this.loading = false;
@@ -209,6 +208,7 @@ export default {
       }).catch((err) => {
         this.loading = false;
         message.error(`竞猜提交失败 (${err.message})`);
+        console.error(err);
       });
     },
   },

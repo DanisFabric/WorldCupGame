@@ -56,7 +56,7 @@ export default {
   components: { Spinner: BreedingRhombusSpinner },
   data() {
     return {
-      address: 'n1NEYDpueKsMuy6M3wCThTXwCr6NuCqGS7n',
+      address: '',
       response: null,
       loading: false,
     };
@@ -86,6 +86,7 @@ export default {
       }).catch((err) => {
         this.loading = false;
         message.error(`查询竞猜失败 (${err.message})`);
+        console.error(err);
       });
     },
   },
@@ -247,6 +248,7 @@ export default {
           border: none;
           font-size: 20px;
           text-align: center;
+          user-select: none;
 
           &:active {
             background-color: darken(#E6D3A6, 10%);
