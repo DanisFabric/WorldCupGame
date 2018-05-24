@@ -105,6 +105,11 @@ export default {
       this.teamKey = teamKey;
     },
     closeAddLotteryModal() {
+      this.fileContent = null;
+      this.password = "";
+      this.lottery = "";
+      this.accountState = null;
+
       this.$store.commit('closeAddLotteryModal');
     },
     openFileSelector() {
@@ -167,7 +172,7 @@ export default {
         return;
       }
       if (!this.lottery || !this.lottery.trim()) {
-        message.error('尚未输入投注金额');
+        message.error('尚未输入竞猜金额');
         return;
       }
       if (!/^(?:100(\.00?)?|[0-9][0-9]?(\.[0-9][0-9]?)?)$/.test(this.lottery)) {
@@ -181,18 +186,18 @@ export default {
       }
       const balance = parseNas(state.balance);
       if (lottery > balance) {
-        message.error('投注金额已超过您的账户余额');
+        message.error('竞猜金额已超过您的账户余额');
         return;
       }
       console.log('addLottery');
       this.loading = true;
       addLottery(this.teamKey, this.accountState.account, lottery).then((hash) => {
         this.loading = false;
-        message.success('投注提交成功');
+        message.success('竞猜提交成功，请稍后查询您的竞猜情况');
         this.hash = hash;
       }).catch((err) => {
         this.loading = false;
-        message.error(`投注提交失败 (${err.message})`);
+        message.error(`竞猜提交失败 (${err.message})`);
       });
     },
   },
