@@ -1,6 +1,13 @@
 <template>
   <div class="overlay" :style="overlayStyle">
     <div class="modal">
+      <div class="loading" :style="loadingStyle">
+        <spinner
+          :animation-duration="2000"
+          :size="65"
+          color="#BBFF33"
+        />
+      </div>
       <header>
         <div class="title" :style="modalTitleStyle">请选择支持国家球队</div>
         <div class="close" :style="modalCloseStyle" @click="closeAddLotteryModal"></div>
@@ -29,14 +36,32 @@
         </div>
       </section>
       <section class="account">
-        <div class="input-group">
-          <input type="text" class="privatekey" placeholder="请输入您的 NAS 私钥">
-          <button>确定</button>
+        <div class="account-state" v-if="accountState">
+          <div class="account-info">
+            <span class="field">账号地址：</span>
+            <input class="value" :value="address" disabled>
+          </div>
+          <div class="account-info">
+            <span class="field">当前余额：</span>
+            <input class="value" :value="balance" disabled>
+          </div>
         </div>
-        <input type="text" class="lottery" placeholder="输入投注金额 0.01 ~ 100 NAS">
+        <div class="select-file" v-else-if="fileContent == null">
+          <button @click="openFileSelector">导入账号文件</button>
+          <input ref="file" type="file" style="display: none;" @change="onFileSelected">
+        </div>
+        <div class="input-group" v-else>
+          <input type="text" class="password" placeholder="请输入账号密码" v-model="password">
+          <button @click="onSubmitPassword">确定</button>
+        </div>
+        <input type="text" class="lottery" placeholder="输入投注金额 0.01 ~ 100 NAS" v-model="lottery">
       </section>
       <footer>
-        <div class="submit" :style="modalSubmitStyle">
+        <div 
+          class="submit" 
+          :style="modalSubmitStyle" 
+          @click="submitAddLottery"
+        >
           <span>立即参与</span>
         </div>
       </footer>
@@ -44,7 +69,11 @@
   </div>
 </template>
 <script>
+import numeral from 'numeral';
+import { BreedingRhombusSpinner } from 'epic-spinners';
+import { restoreAccountFromKey, parseNas, addLottery } from '../api/index';
 import { groups } from '../worldcup';
+import { message } from '../utils';
 import modalTitleBackground from '../assets/modal-title.png';
 import modalCloseBackground from '../assets/modal-close.png';
 import modalSubmitBackground from '../assets/modal-submit.png';
@@ -52,10 +81,17 @@ import modalSubmitBackground from '../assets/modal-submit.png';
 const values = require('lodash/values');
 
 export default {
+  components: { Spinner: BreedingRhombusSpinner },
   data() {
     return {
       groupKey: 'a',
       teamKey: null,
+      fileContent: null,
+      password: '',
+      accountState: null,
+      loading: false,
+      lottery: '',
+      hash: null,
     };
   },
   methods: {
@@ -70,6 +106,94 @@ export default {
     },
     closeAddLotteryModal() {
       this.$store.commit('closeAddLotteryModal');
+    },
+    openFileSelector() {
+      const input = this.$refs.file;
+      if (input) {
+        input.click();
+      }
+    },
+    clearFileSelection() {
+      const input = this.$refs.file;
+      if (input) {
+        input.files.length = 0;
+      }
+    },
+    onFileSelected(fileEvent) {
+      const file = fileEvent.target.files[0];
+      if (file) {
+        const reader = new FileReader(); /* global FileReader */
+        // 将文件以文本形式读入页面
+        reader.onload = (readEvent) => {
+          this.loading = false;
+          const content = readEvent.target.result;
+          this.fileContent = content;
+        };
+        reader.onerror = (err) => {
+          this.loading = false;
+          message.success(`读取文件出错 (${err.message})`);
+          console.error(err);
+          this.clearFileSelection();
+        };
+        reader.readAsText(file);
+        this.loading = true;
+      }
+    },
+    onSubmitPassword() {
+      const key = this.fileContent;
+      const pass = this.password;
+
+      this.loading = true;
+      restoreAccountFromKey(key, pass).then((accountState) => {
+        message.success('导入账号成功');
+        this.accountState = accountState;
+      }).catch((err) => {
+        message.error(`导入账号失败 (${err.message})`);
+        console.error(err);
+        this.fileContent = null;
+        this.password = '';
+        this.clearFileSelection();
+      }).then(() => {
+        this.loading = false;
+      });
+    },
+    submitAddLottery() {
+      if (!this.teamKey) {
+        message.error('尚未选择球队');
+        return;
+      }
+      if (!this.accountState) {
+        message.error('尚未导入账号');
+        return;
+      }
+      if (!this.lottery || !this.lottery.trim()) {
+        message.error('尚未输入投注金额');
+        return;
+      }
+      if (!/^(?:100(\.00?)?|[0-9][0-9]?(\.[0-9][0-9]?)?)$/.test(this.lottery)) {
+        message.error('请输入0.01~100的数字，最多两位小数');
+      }
+      const lottery = Number(this.lottery);
+      const { state } = this.accountState || {};
+      if (!state) {
+        message.error('账号信息有误');
+        return;
+      }
+      const balance = parseNas(state.balance);
+      if (lottery > balance) {
+        message.error('投注金额已超过您的账户余额');
+        return;
+      }
+      console.log('addLottery');
+      this.loading = true;
+      addLottery(this.teamKey, this.accountState.account, lottery).then((hash) => {
+        this.loading = false;
+        message.success('投注提交成功');
+        this.hash = hash;
+      }).catch((err) => {
+        this.loading = false;
+        message.error(`投注提交失败 (${err.message})`);
+      });
     },
   },
   computed: {
@@ -107,6 +231,23 @@ export default {
     modalSubmitStyle() {
       return `background-image: url("${modalSubmitBackground}")`;
     },
+    loadingStyle() {
+      if (this.loading) {
+        return '';
+      }
+      return 'display: none';
+    },
+    address() {
+      const { account } = this.accountState || {};
+      if (!account) { return null; }
+      return account.getAddressString();
+    },
+    balance() {
+      const { state } = this.accountState || {};
+      if (!state) { return null; }
+      const balance = parseNas(state.balance);
+      return `${numeral(balance).format('0[.]00')} NAS`;
+    },
   },
 };
 </script>
@@ -131,6 +272,21 @@ export default {
     min-height: 200px;
     background-color: #ffffff;
     color: #000000;
+    position: relative;
+
+    .loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: fadeout(#000000, 80%);
+    }
 
     header {
       display: flex;
@@ -221,9 +377,36 @@ export default {
     section.account {
       padding: 64px;
 
-      .input-group {
+      .account-state {
+        margin: -20px auto 30px;
+        width: 370px;
+        height: 70px;
+        box-sizing: border-box;
+
+        .account-info {
+          display: flex;
+          height: 45px;
+          align-items: center;
+          
+          .field {
+            flex: 0 0 auto;
+            font-size: 20px;
+          }
+          .value {
+            flex: 1;
+            overflow-x: scroll;
+            background-color: #f7f7f7;
+            padding: 0 8px;
+            -webkit-appearance: none;
+            border: none;
+            font-size: 20px;
+          }
+        }
+      }
+
+      .select-file {
         display: flex;
-        margin: 0 auto;
+        margin: 0 auto 30px;
         width: 370px;
         height: 50px;
         border: 2px solid #E6D3A6;
@@ -231,7 +414,33 @@ export default {
         font-size: 20px;
         text-align: center;
 
-        input.privatekey {
+        button {
+          width: 100%;
+          height: 100%;
+          background-color: #E6D3A6;
+          -webkit-appearance: none;
+          outline: none;
+          border: none;
+          font-size: 20px;
+          text-align: center;
+
+          &:active {
+            background-color: darken(#E6D3A6, 10%);
+          }
+        }
+      }
+
+      .input-group {
+        display: flex;
+        margin: 0 auto 30px;
+        width: 370px;
+        height: 50px;
+        border: 2px solid #E6D3A6;
+        box-sizing: border-box;
+        font-size: 20px;
+        text-align: center;
+
+        input.password {
           flex: 1;
           display: block;
           height: 100%;
@@ -265,7 +474,7 @@ export default {
 
       input.lottery {
         display: block;
-        margin: 30px auto 0;
+        margin: 0 auto;
         width: 370px;
         height: 50px;
         -webkit-appearance: none;
@@ -305,5 +514,9 @@ export default {
       }
     }
   }
+}
+
+code {
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
 }
 </style>

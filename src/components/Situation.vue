@@ -22,6 +22,7 @@
           </div>
           <div class="percentage-container">
             <div class="percentage">{{ item.progressText }}</div>
+            <div class="balance">{{ item.balanceText }}</div>
           </div>
         </div>
       </div>
@@ -41,8 +42,7 @@
 import _ from 'lodash';
 import numeral from 'numeral';
 import { BreedingRhombusSpinner } from 'epic-spinners';
-import { teams } from '../worldcup';
-import { getCountriesBalances } from '../api/index';
+import { getCountriesBalances, parseNas } from '../api/index';
 
 
 export default {
@@ -56,6 +56,7 @@ export default {
           .value()
           .map((item) => {
             const extra = {};
+            extra.balanceText = `${numeral(parseNas(item.balance)).format('0[.]00')} NAS`;
             extra.progressText = numeral(item.percentage).format('0.0%');
             extra.progressStyle = `width: ${extra.progressText}`;
             return Object.assign(extra, item);
@@ -71,24 +72,6 @@ export default {
       loaded: false,
       data: [],
     };
-  },
-
-  computed: {
-    situation() {
-      const data = [
-        { team: teams.de, progress: 0.945 },
-        { team: teams.br, progress: 0.565 },
-        { team: teams.fr, progress: 0.345 },
-      ];
-      const res = data.map(item => ({
-        teamName: item.team.name,
-        teamFlag: item.team.flag,
-        progressText: numeral(item.progress).format('0.0%'),
-        progressStyle: `width: ${numeral(item.progress).format('0.0%')}`,
-      }));
-
-      return res;
-    },
   },
 };
 </script>
@@ -142,6 +125,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: 130px;
+    padding-left: 50px;
 
     .progress, .progress-bar, .progress-bar img {
       width: 624px;
@@ -159,7 +143,7 @@ export default {
     }
   }
   .percentage-container {
-    width: 60px;
+    width: 130px;
     display: flex;
     flex-flow: column;
     align-items: flex-end;
@@ -167,6 +151,13 @@ export default {
 
     .percentage {
       font-size: 16px;
+      color: #E6D3A6;
+    }
+
+    .balance {
+      font-size: 12px;
+      margin-top: 4px;
+      color: #cccccc;
     }
   }
 }
