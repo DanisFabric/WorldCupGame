@@ -38,8 +38,8 @@
   },
   "scripts": {
     "start": "parcel index.html -d .dist.dev",
-    "build": "parcel build index.html",
-    "clean": "rm -rf ./dist ./.cache ./.dist.dev"
+    "build": "rm -rf ./docs && parcel build index.html --no-minify -d docs --public-url ./",
+    "clean": "rm -rf ./docs ./.cache ./.dist.dev"
   },
   "author": "Danisfabric & Linkeo",
   "license": "ISC"
