@@ -7,6 +7,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     isAddLotteryModalVisible: false,
+    isCheckLotteryModalVisible: false,
   },
   mutations: {
     openAddLotteryModal(state) {
@@ -14,6 +15,12 @@ const store = new Vuex.Store({
     },
     closeAddLotteryModal(state) {
       state.isAddLotteryModalVisible = false;
+    },
+    openCheckLotteryModal(state) {
+      state.isCheckLotteryModalVisible = true;
+    },
+    closeCheckLotteryModal(state) {
+      state.isCheckLotteryModalVisible = false;
     },
   },
 });

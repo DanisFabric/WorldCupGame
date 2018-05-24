@@ -38,6 +38,7 @@ export default {
     .footer-link-item {
       min-width: 200px;
       padding: 0 40px;
+      text-align: center;
     }
   }
   

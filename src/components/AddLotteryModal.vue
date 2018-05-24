@@ -35,7 +35,18 @@
           </div>
         </div>
       </section>
-      <section class="account">
+      <section class="hash-section" v-if="hash">
+        <div class="hash-title">
+          参与成功！
+        </div>
+        <div class="hash-block">
+          <div class="hash-info">
+            <span class="field">HASH值：</span>
+            <input class="value" :value="hash" disabled>
+          </div>
+        </div>
+      </section>
+      <section class="account" v-else>
         <div class="account-state" v-if="accountState">
           <div class="account-info">
             <span class="field">账号地址：</span>
@@ -106,8 +117,8 @@ export default {
     },
     closeAddLotteryModal() {
       this.fileContent = null;
-      this.password = "";
-      this.lottery = "";
+      this.password = '';
+      this.lottery = '';
       this.accountState = null;
 
       this.$store.commit('closeAddLotteryModal');
@@ -136,7 +147,7 @@ export default {
         };
         reader.onerror = (err) => {
           this.loading = false;
-          message.success(`读取文件出错 (${err.message})`);
+          message.error(`读取文件出错 (${err.message})`);
           console.error(err);
           this.clearFileSelection();
         };
@@ -191,10 +202,10 @@ export default {
       }
       console.log('addLottery');
       this.loading = true;
-      addLottery(this.teamKey, this.accountState.account, lottery).then((hash) => {
+      addLottery(this.teamKey, this.accountState.account, lottery).then((res) => {
         this.loading = false;
         message.success('竞猜提交成功，请稍后查询您的竞猜情况');
-        this.hash = hash;
+        this.hash = res.txhash;
       }).catch((err) => {
         this.loading = false;
         message.error(`竞猜提交失败 (${err.message})`);
@@ -303,7 +314,8 @@ export default {
         background-size: contain;
         background-position: center;
         font-size: 20px;
-        padding: 8px 16px 12px;
+        padding: 8px 42px 12px 16px;
+        text-align: center;
       }
       .close {
         width: 84px;
@@ -378,9 +390,77 @@ export default {
         }
       }
     }
+    section.hash-section {
+      padding: 64px;
+
+
+      .hash-title {
+        margin: 0 auto 30px;
+        width: 370px;
+        height: 50px;
+        box-sizing: border-box;
+        font-size: 28px;
+        text-align: center;
+        font-weight: bold;
+      }
+      
+      .hash-block {
+        margin: 0 auto;
+        width: 370px;
+        height: 50px;
+        box-sizing: border-box;
+
+        .hash-info {
+          display: flex;
+          height: 45px;
+          align-items: center;
+          
+          .field {
+            flex: 0 0 auto;
+            font-size: 20px;
+          }
+          .value {
+            flex: 1;
+            overflow-x: scroll;
+            background-color: #f7f7f7;
+            padding: 0 8px;
+            -webkit-appearance: none;
+            border: none;
+            font-size: 20px;
+          }
+        }
+      }
+    }
 
     section.account {
       padding: 64px;
+
+      .hash-block {
+        margin: -20px auto 30px;
+        width: 370px;
+        height: 70px;
+        box-sizing: border-box;
+
+        .hash-info {
+          display: flex;
+          height: 45px;
+          align-items: center;
+          
+          .field {
+            flex: 0 0 auto;
+            font-size: 20px;
+          }
+          .value {
+            flex: 1;
+            overflow-x: scroll;
+            background-color: #f7f7f7;
+            padding: 0 8px;
+            -webkit-appearance: none;
+            border: none;
+            font-size: 20px;
+          }
+        }
+      }
 
       .account-state {
         margin: -20px auto 30px;

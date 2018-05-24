@@ -22,6 +22,11 @@ export default new Router({
       component: DataList,
     },
     {
+      path: '/data-list-:page(\\d+)',
+      name: 'PagedDataList',
+      component: DataList,
+    },
+    {
       path: '/situation',
       name: 'Situation',
       component: Situation,

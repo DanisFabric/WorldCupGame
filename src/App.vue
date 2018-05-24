@@ -6,6 +6,7 @@
       <page-footer />
     </div>
     <add-lottery-modal></add-lottery-modal>
+    <check-lottery-modal></check-lottery-modal>
   </div>
 </template>
 
@@ -13,10 +14,13 @@
 import Navigator from './components/Navigator.vue';
 import PageFooter from './components/Footer.vue';
 import AddLotteryModal from './components/AddLotteryModal.vue';
+import CheckLotteryModal from './components/CheckLotteryModal.vue';
 
 export default {
   name: 'App',
-  components: { Navigator, PageFooter, AddLotteryModal },
+  components: {
+    Navigator, PageFooter, AddLotteryModal, CheckLotteryModal,
+  },
 };
 </script>
 

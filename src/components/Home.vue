@@ -6,7 +6,7 @@
         <div class="subtitle">基于区块链的透明公开的足球竞猜</div>
         <div class="buttons">
           <div class="btn btn-left" :style="mainLeftBtnStyle" @click="openAddLotteryModal">立即参与</div>
-          <div class="btn btn-left" :style="mainRightBtnStyle">我的竞猜</div>
+          <div class="btn btn-right" :style="mainRightBtnStyle" @click="openCheckLotteryModal">我的竞猜</div>
         </div>
         <div class="count-down">{{ countdown }}</div>
       </div>
@@ -58,6 +58,9 @@ export default {
   methods: {
     openAddLotteryModal() {
       this.$store.commit('openAddLotteryModal');
+    },
+    openCheckLotteryModal() {
+      this.$store.commit('openCheckLotteryModal');
     },
   },
   computed: {
@@ -129,6 +132,12 @@ export default {
         line-height: 64px;
         user-select: none;
         cursor: pointer;
+      }
+      .btn-left {
+        padding-left: 12px;
+      }
+      .btn-right {
+        padding-right: 12px;
       }
     }
     .count-down {

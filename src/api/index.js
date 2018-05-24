@@ -13,7 +13,7 @@ const nasToWei = value => toBigNumber(value).times(toBigNumber(10).pow(18));
 
 neb.setRequest(new Nebulas.HttpRequest('https://testnet.nebulas.io'));
 
-const contractAddress = 'n1m4HMV8jkje5eBwZ3cSVtJuUEnoiBJt4q5';
+const contractAddress = 'n1qZmctYGY1jXcxJMvYyzZZtKrjSZqLbrYD';
 const internalAccount = {
   address: 'n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy',
   privateKey: '608c2daab9859ae9793aadd2432236df4587803d2b2cf6f37415751ea6b72b1d',
@@ -47,7 +47,7 @@ export async function addLottery(teamKey, account, lottery) {
   const lotteryWei = nasToWei(lottery);
   return neb.api.getAccountState(address)
     .then(state => neb.api.call({
-      chainID: 1001,
+      chainID: CHAIN_ID,
       from: address,
       to: contractAddress,
       value: lotteryWei,
@@ -66,7 +66,7 @@ export async function addLottery(teamKey, account, lottery) {
       })
       .then(() => {
         const tx = new Nebulas.Transaction({
-          chainID: 1001,
+          chainID: CHAIN_ID,
           from: account,
           to: contractAddress,
           value: lotteryWei,
@@ -89,13 +89,13 @@ export async function addLottery(teamKey, account, lottery) {
 export async function getTotalBalance() {
   return neb.api.getAccountState(internalAccount.address)
     .then(state => neb.api.call({
-      chainID: 1001,
+      chainID: CHAIN_ID,
       from: internalAccount.address,
       to: contractAddress,
       value: 0,
       nonce: Number(state.nonce) + 1,
-      gasPrice: 1000000,
-      gasLimit: 2000000,
+      gasPrice: GAS_PRICE,
+      gasLimit: GAS_LIMIT,
       contract: {
         function: 'getBalance',
         args: '',
@@ -112,7 +112,6 @@ export async function restoreAccountFromKey(key, password) {
 
 export async function getCountriesBalances() {
   const countries = await getCountries();
-  console.log({ countries });
 
   // 如果接口不给比例，则请求总数据进行求比
   if (countries[0].proportion == null) {
@@ -140,4 +139,45 @@ export async function getCountriesBalances() {
   });
 
   return result;
+}
+
+export async function getLotteryList(page, pageSize) {
+  const pageNumber = Number(page) || 1;
+  const limit = pageSize;
+  const skip = (pageNumber - 1) * limit;
+
+  return neb.api.getAccountState(internalAccount.address)
+    .then(state => neb.api.call({
+      chainID: CHAIN_ID,
+      from: internalAccount.address,
+      to: contractAddress,
+      value: 0,
+      nonce: Number(state.nonce) + 1,
+      gasPrice: GAS_PRICE,
+      gasLimit: GAS_LIMIT,
+      contract: {
+        function: 'getLotteries',
+        args: JSON.stringify([limit, skip]),
+      },
+    }))
+    .then(res => JSON.parse(res.result));
+}
+
+export async function checkLottery(address) {
+  // n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy
+  return neb.api.getAccountState(internalAccount.address)
+    .then(state => neb.api.call({
+      chainID: CHAIN_ID,
+      from: internalAccount.address,
+      to: contractAddress,
+      value: 0,
+      nonce: Number(state.nonce) + 1,
+      gasPrice: GAS_PRICE,
+      gasLimit: GAS_LIMIT,
+      contract: {
+        function: 'getLottery',
+        args: JSON.stringify([address]),
+      },
+    }))
+    .then(res => JSON.parse(res.result));
 }

@@ -43,11 +43,12 @@ import _ from 'lodash';
 import numeral from 'numeral';
 import { BreedingRhombusSpinner } from 'epic-spinners';
 import { getCountriesBalances, parseNas } from '../api/index';
+import { message } from '../utils';
 
 
 export default {
   components: { Spinner: BreedingRhombusSpinner },
-  mounted() {
+  created() {
     this.loaded = false;
     getCountriesBalances()
       .then((data) => {
@@ -63,7 +64,9 @@ export default {
           });
         this.data.length = 0;
         this.data.push(...prettyData);
-        console.log(data, prettyData, this.data.length);
+      }).catch((err) => {
+        this.loaded = true;
+        message.error(`加载球队数据失败 (${err.message})`);
       });
   },
 
