@@ -2,7 +2,7 @@ import Nebulas from 'nebulas';
 import BigNumber from 'bignumber.js/bignumber';
 import { teams, teamKeys } from '../worldcup';
 
-const CHAIN_ID = 1001;
+const CHAIN_ID = 1;
 const GAS_PRICE = 1000000;
 const GAS_LIMIT = 2000000;
 
@@ -11,12 +11,11 @@ const neb = new Nebulas.Neb();
 const toBigNumber = value => new BigNumber(value);
 const nasToWei = value => toBigNumber(value).times(toBigNumber(10).pow(18));
 
-neb.setRequest(new Nebulas.HttpRequest('https://testnet.nebulas.io'));
+neb.setRequest(new Nebulas.HttpRequest('https://mainnet.nebulas.io'));
 
-const contractAddress = 'n1qZmctYGY1jXcxJMvYyzZZtKrjSZqLbrYD';
+const contractAddress = 'n1q1C2kZ1L9rJWpJp3xxnuHMsj844VowQ2E';
 const internalAccount = {
-  address: 'n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy',
-  privateKey: '608c2daab9859ae9793aadd2432236df4587803d2b2cf6f37415751ea6b72b1d',
+  address: 'n1FK4UwcQvxV1S6rBw6e1TNW17wDN7ND9e2',
 };
 
 export function parseNas(wei) {

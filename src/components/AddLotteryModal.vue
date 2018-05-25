@@ -58,12 +58,12 @@
           </div>
         </div>
         <div class="select-file" v-else-if="fileContent == null">
-          <button @click="openFileSelector">导入账号文件</button>
+          <button @click="openFileSelector">选择钱包文件</button>
           <input ref="file" type="file" style="display: none;" @change="onFileSelected">
         </div>
         <div class="input-group" v-else>
-          <input type="text" class="password" placeholder="请输入账号密码" v-model="password">
-          <button @click="onSubmitPassword">确定</button>
+          <input type="password" class="password" placeholder="请输入账号密码" v-model="password">
+          <button @click="onSubmitPassword">解锁</button>
         </div>
         <input type="text" class="lottery" placeholder="输入投注金额 0.01 ~ 100 NAS" v-model="lottery">
       </section>

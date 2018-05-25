@@ -5,10 +5,10 @@ const BigNumber = require('bignumber.js');
 
 const neb = new Nebulas.Neb();
 
-neb.setRequest(new Nebulas.HttpRequest('https://testnet.nebulas.io'));
+neb.setRequest(new Nebulas.HttpRequest('https://mainnet.nebulas.io'));
 
 const address = '';
-const contractAddress = 'n1qZmctYGY1jXcxJMvYyzZZtKrjSZqLbrYD';
+const contractAddress = 'n1gPaHo7gF9M7Ks45e8idmgNX4nggheWbR4';
 
 const testAccounts = [
   { address: 'n1b18cYuzp2bS14KPwC7cyF38Pe4JHaJKdy', privateKey: '608c2daab9859ae9793aadd2432236df4587803d2b2cf6f37415751ea6b72b1d' },
@@ -225,30 +225,49 @@ function setChampion() {
   const account = new Nebulas.Account('861ec7e9df55736b5a0caf60a9380a344b88e1aa804f3ee18d644d07d816b7e1', 'hex');
   neb.api.getAccountState(account.getAddressString()).then((state) => {
     console.log(state);
-
-
-    const tx = new Nebulas.Transaction({
+    neb.api.call({
       chainID: 1001,
-      from: account,
+      from: account.getAddressString(),
       to: contractAddress,
-      value: 0,
+      value: nasToWei(0.01),
       nonce: parseInt(state.nonce) + 1,
       gasPrice: 1000000,
       gasLimit: 2000000,
       contract: {
         function: 'setChampion',
-        args: '["17", "Switzerland", "瑞士"]',
+        args: '["0", "Russia", "俄罗斯"]',
       },
-    });
-    tx.signTransaction();
-    neb.api.sendRawTransaction({
-      data: tx.toProtoString(),
-    }).then((hash) => {
-      console.log('发送成功');
-      console.log(hash);
-    }).catch((reason) => {
-      console.log('出错了');
-      console.log(reason);
+    }).then((x) => {
+      console.log(x);
+      if (x.execute_err != null && x.execute_err != '') {
+        console.log('调用出错了，不进行transaction');
+        return;
+      }
+      const tx = new Nebulas.Transaction({
+        chainID: 1001,
+        from: account,
+        to: contractAddress,
+        value: nasToWei(0.01),
+        nonce: parseInt(state.nonce) + 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+          function: 'setChampion',
+          args: '["0", "Russia", "俄罗斯"]',
+        },
+      });
+      tx.signTransaction();
+      neb.api.sendRawTransaction({
+        data: tx.toProtoString(),
+      }).then((hash) => {
+        console.log('发送成功');
+        console.log(hash);
+      }).catch((reason) => {
+        console.log('出错了');
+        console.log(reason);
+      });
+    }).catch((err) => {
+      console.log(err);
     });
   }).catch((err) => {
     console.log(err);
@@ -311,4 +330,10 @@ function testAccount() {
 // getBonusDistribution();
 
 // testAccount();
-getLotteries();
+// getLotteries();
+
+// setChampion();
+
+neb.api.getNebState().then((state) => {
+  console.log(state);
+});
