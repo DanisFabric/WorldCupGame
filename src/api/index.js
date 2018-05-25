@@ -13,7 +13,7 @@ const nasToWei = value => toBigNumber(value).times(toBigNumber(10).pow(18));
 
 neb.setRequest(new Nebulas.HttpRequest('https://mainnet.nebulas.io'));
 
-const contractAddress = 'n1q1C2kZ1L9rJWpJp3xxnuHMsj844VowQ2E';
+export const contractAddress = 'n1q1C2kZ1L9rJWpJp3xxnuHMsj844VowQ2E';
 const internalAccount = {
   address: 'n1FK4UwcQvxV1S6rBw6e1TNW17wDN7ND9e2',
 };

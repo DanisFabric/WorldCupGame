@@ -15,8 +15,9 @@
       <div class="container">
         <img class="fifa-logo" src="../assets/fifa2018.png" alt="FIFA 2018">
         <div class="section-title">竞猜规则</div>
-        <div class="rule-content">所有竞猜用户需在世界杯开赛前，投注你所支持的球队。若你的球队最终获得世界杯冠军，你将与其他同时投注该球队的用户，按照投入NAS的比例，瓜分奖池所有奖金。<br/><br/>1. 所有竞猜资金作为奖池，本网站从中抽取5%手续费。<br/>2. 本平台将于2018年7月20日开奖，届时中奖用户的奖金将自动转账至您投注的账户。<br/>3. 同一账户地址不能多次参与竞猜，竞猜金额限制于 0.01NAS - 100NAS。<br/>4. 最终解释权归 n1q1C2kZ1L9rJWpJp3xxnuHMsj844VowQ2E 合约所有。
-</div>
+        <div class="rule-content">
+          所有竞猜用户需在世界杯开赛前，投注你所支持的球队。若你的球队最终获得世界杯冠军，你将与其他同时投注该球队的用户，按照投入NAS的比例，瓜分奖池所有奖金。<br/><br/>1. 所有竞猜资金作为奖池，本网站从中抽取5%手续费。<br/>2. 本平台将于2018年7月20日开奖，届时中奖用户的奖金将自动转账至您投注的账户。<br/>3. 同一账户地址不能多次参与竞猜，竞猜金额限制于 0.01NAS - 100NAS。<br/>4. 最终解释权归 {{ contractAddress }} 合约所有。
+        </div>
         <div class="rule-bottom">
           <img src="../assets/rule-bottom.png" alt="- -- -------------">
         </div>
@@ -45,6 +46,7 @@
   </div>
 </template>
 <script>
+import { contractAddress } from '../api/index';
 import mainBackground from '../assets/main-background.jpg';
 import mainLeftBtn from '../assets/btn-green-left.png';
 import mainRightBtn from '../assets/btn-white-right.png';
@@ -65,6 +67,9 @@ export default {
     },
   },
   computed: {
+    contractAddress() {
+      return contractAddress;
+    },
     mainStyle() {
       return `background-image: url(${mainBackground})`;
     },
@@ -160,7 +165,6 @@ export default {
   #rule {
     background-color: #ffffff;
     color: #000000;
-    height: 599px;
     padding: 80px 0;
 
     .fifa-logo {

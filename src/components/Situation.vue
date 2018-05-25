@@ -57,8 +57,8 @@ export default {
           .value()
           .map((item) => {
             const extra = {};
-            extra.balanceText = `${numeral(parseNas(item.balance)).format('0[.]00')} NAS`;
-            extra.progressText = numeral(item.percentage).format('0.0%');
+            extra.balanceText = `${numeral(parseNas(item.balance)).format('0.00000000')} NAS`;
+            extra.progressText = numeral(item.percentage).format('0.00%');
             extra.progressStyle = `width: ${extra.progressText}`;
             return Object.assign(extra, item);
           });

@@ -186,10 +186,15 @@ export default {
         message.error('尚未输入竞猜金额');
         return;
       }
-      if (!/^(?:100(\.00?)?|[0-9][0-9]?(\.[0-9][0-9]?)?)$/.test(this.lottery)) {
-        message.error('请输入0.01~100的数字，最多两位小数');
+      if (!/^(?:100(\.0{1,8}?)?|[0-9][0-9]?(\.[0-9]{1,8})?)$/.test(this.lottery)) {
+        message.error('请输入0.01~100的数字，最多8位小数');
+        return;
       }
       const lottery = Number(this.lottery);
+      if (lottery > 100 || lottery < 0.01) {
+        message.error('请输入0.01~100的数字，最多8位小数');
+        return;
+      }
       const { state } = this.accountState || {};
       if (!state) {
         message.error('账号信息有误');
@@ -262,7 +267,7 @@ export default {
       const { state } = this.accountState || {};
       if (!state) { return null; }
       const balance = parseNas(state.balance);
-      return `${numeral(balance).format('0[.]00')} NAS`;
+      return `${numeral(balance).format('0.00000000')} NAS`;
     },
   },
 };

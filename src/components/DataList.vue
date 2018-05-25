@@ -17,21 +17,11 @@
           </thead>
           <tbody>
             <tr v-for="item in list" :key="item.address">
-              <td :title="item.address">
-                {{ item.address }}
-              </td>
-              <td :title="item.team.name">
-                {{ item.team.name }}
-              </td>
-              <td :title="item.valueText">
-                {{ item.valueText }}
-              </td>
-              <td :title="item.expectedBonusText">
-                {{ item.expectedBonusText }}
-              </td>
-              <td :title="item.time">
-                {{ item.time }}
-              </td>
+              <td class="address">{{ item.address }}</td>
+              <td>{{ item.team.name }}</td>
+              <td>{{ item.valueText }}</td>
+              <td>{{ item.expectedBonusText }}</td>
+              <td>{{ item.time }}</td>
             </tr>
             <tr v-for="item in pad" :key="item">
               <td>&nbsp;</td>
@@ -115,8 +105,8 @@ export default {
         this.list = lotteries.map(item => ({
           address: item.address,
           team: teams[teamKeys[item.countryIndex]],
-          valueText: `${numeral(parseNas(item.value)).format('0.00')} NAS`,
-          expectedBonusText: `${numeral(parseNas(item.expectedBonus)).format('0.00')} NAS`,
+          valueText: `${numeral(parseNas(item.value)).format('0.00000000')} NAS`,
+          expectedBonusText: `${numeral(parseNas(item.expectedBonus)).format('0.00000000')} NAS`,
           time: moment(item.timestamp).format('YYYY-MM-DD'),
         }));
       }).catch((err) => {
@@ -209,6 +199,12 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: default;
+  }
+  td.address {
+    padding: 4px 12px;
+    word-wrap: break-word;
+    font-size: 12px;
+    font-family: Monaco, Menlo, Consolas, 'Courier New', Courier, monospace;
   }
   th {
     background-color: #E6D3A6;

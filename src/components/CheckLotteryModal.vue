@@ -79,8 +79,8 @@ export default {
         this.response = {
           address: item.address,
           team: teams[teamKeys[item.countryIndex]],
-          valueText: `${numeral(parseNas(item.value)).format('0.00')} NAS`,
-          expectedBonusText: `${numeral(parseNas(item.expectedBonus)).format('0.00')} NAS`,
+          valueText: `${numeral(parseNas(item.value)).format('0.00000000')} NAS`,
+          expectedBonusText: `${numeral(parseNas(item.expectedBonus)).format('0.00000000')} NAS`,
           time: moment(item.timestamp).format('YYYY-MM-DD'),
         };
       }).catch((err) => {
