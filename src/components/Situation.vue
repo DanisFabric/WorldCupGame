@@ -2,7 +2,7 @@
   <div id="situation">
     <div class="container">
       <div class="description">
-        <p>当前各国家队的支持情况，柱状图为您提供了不同国家的竞猜资金占总资金的比例</p>
+        <p>当前各个国家竞猜金额与支持率</p>
       </div>
       <div class="list" v-if="loaded">
         <div class="item" v-for="item in data" :key="item.name">

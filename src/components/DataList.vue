@@ -2,7 +2,7 @@
   <div id="data-list">
     <div class="container">
       <div class="description">
-        <p>您能够在当前页面查询到所有的竞猜信息。并且所有数据存储于区块链，本网站无法改动竞猜数据。</p>
+        <p>所有数据存储于Nebulas区块链上，本平台无法擅自篡改竞猜数据。</p>
       </div>
       <div class="list" :style="listStyle" v-if="list">
         <table>
