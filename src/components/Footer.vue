@@ -4,7 +4,7 @@
       <div id="footer-logo" class="nav-item"><img src="../assets/footer-logo.png" alt=""></div>
       <div class="footer-link-list">
         <a class="footer-link-item" href="https://github.com/DanisFabric/WorldCupGame">网站源码</a>
-        <a class="footer-link-item" href="">合约源码</a>
+        <a class="footer-link-item" href="https://github.com/DanisFabric/WorldCupGame/blob/master/contract/worldcup.ts">合约源码</a>
         <a class="footer-link-item" href="mailto:danisfabric@gmail.com">联系我们</a>
       </div>
     </div>
