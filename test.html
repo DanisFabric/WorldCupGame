@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>send transaction</title>
+    <link rel=stylesheet href=../html/css/base.css>
+    <link rel=stylesheet href=../html/css/ui-block.css>
+    <script src=nebPay.js></script>     <!-- you should add nebPay.js to you Dapp page><!-->
+</head>
+
+<style>
+</style>
+
+<body>
+    <script>
+        var NebPay = require("nebpay");
+        var nebPay = new NebPay();
+
+        if (typeof(webExtensionWallet) === "undefined") {
+            alert("需要安装钱包插件");
+        }
+
+        function onClickCallDapp() {
+            var contractAddress = "n1q1C2kZ1L9rJWpJp3xxnuHMsj844VowQ2E";
+            var value = 0.01;
+            var callFuncion = "addLottery";
+            var callArgs = '["18"]';
+            nebPay.call(contractAddress, value, callFuncion, callArgs, {
+                qrcode: {
+                    showQRCode: false 
+                },
+                listener: cbSimulateCall
+            });
+        }
+        function cbSimulateCall(resp){
+            alert("callback resp: " + JSON.stringify(resp))
+        }
+        function test() {
+            alert("开始调用了哦");
+        }
+        
+    </script>
+    <button type="button" id="test" onclick="onClickCallDapp()">调用</button>
+</body>
+</html>
