@@ -1,6 +1,9 @@
 import Nebulas from 'nebulas';
+import NebPay from 'nebpay.js';
 import BigNumber from 'bignumber.js/bignumber';
 import { teams, teamKeys } from '../worldcup';
+
+const nebPay = new NebPay();
 
 const CHAIN_ID = 1;
 const GAS_PRICE = 1000000;
@@ -9,7 +12,6 @@ const GAS_LIMIT = 2000000;
 const neb = new Nebulas.Neb();
 
 const toBigNumber = value => new BigNumber(value);
-const nasToWei = value => toBigNumber(value).times(toBigNumber(10).pow(18));
 
 neb.setRequest(new Nebulas.HttpRequest('https://mainnet.nebulas.io'));
 
@@ -40,49 +42,17 @@ export async function getCountries() {
     .then(res => JSON.parse(res.result));
 }
 
-export async function addLottery(teamKey, account, lottery) {
+export async function addLottery(teamKey, lottery) {
   const teamId = teamKeys.indexOf(teamKey);
-  const address = account.getAddressString();
-  const lotteryWei = nasToWei(lottery);
-  return neb.api.getAccountState(address)
-    .then(state => neb.api.call({
-      chainID: CHAIN_ID,
-      from: address,
-      to: contractAddress,
-      value: lotteryWei,
-      nonce: Number(state.nonce) + 1,
-      gasPrice: GAS_PRICE,
-      gasLimit: GAS_LIMIT,
-      contract: {
-        function: 'addLottery',
-        args: JSON.stringify([`${teamId}`]),
-      },
-    })
-      .then((res) => {
-        if (res.execute_err != null && res.execute_err !== '') {
-          throw new Error(res.execute_err);
-        }
-      })
-      .then(() => {
-        const tx = new Nebulas.Transaction({
-          chainID: CHAIN_ID,
-          from: account,
-          to: contractAddress,
-          value: lotteryWei,
-          nonce: Number(state.nonce) + 1,
-          gasPrice: GAS_PRICE,
-          gasLimit: GAS_LIMIT,
-          contract: {
-            function: 'addLottery',
-            args: JSON.stringify([`${teamId}`]),
-          },
-        });
-        tx.signTransaction();
-
-        return neb.api.sendRawTransaction({
-          data: tx.toProtoString(),
-        });
-      }));
+  const value = lottery;
+  const callFunction = 'addLottery';
+  const callArgs = JSON.stringify([`${teamId}`]);
+  return new Promise((resolve) => {
+    nebPay.call(contractAddress, value, callFunction, callArgs, {
+      qrcode: { showQRCode: false },
+      listener: resolve,
+    });
+  });
 }
 
 export async function getTotalBalance() {

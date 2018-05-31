@@ -46,26 +46,22 @@
           </div>
         </div>
       </section>
-      <section class="account" v-else>
-        <div class="account-state" v-if="accountState">
-          <div class="account-info">
-            <span class="field">账号地址：</span>
-            <input class="value" :value="address" disabled>
-          </div>
-          <div class="account-info">
-            <span class="field">当前余额：</span>
-            <input class="value" :value="balance" disabled>
-          </div>
-        </div>
-        <div class="select-file" v-else-if="fileContent == null">
-          <button @click="openFileSelector">选择钱包文件</button>
-          <input ref="file" type="file" style="display: none;" @change="onFileSelected">
-        </div>
-        <div class="input-group" v-else>
-          <input type="password" class="password" placeholder="请输入账号密码" v-model="password">
-          <button @click="onSubmitPassword">解锁</button>
+      <section class="account" v-else-if="isWebExtensionInstalled">
+        <div class="lottery-hint">
+          请填入金额参与竞猜，同一个账户只能竞猜一次哦
         </div>
         <input type="text" class="lottery" placeholder="输入投注金额 0.01 ~ 100 NAS" v-model="lottery">
+      </section>
+      <section class="install" v-else>
+        <div class="install-hint">
+          你需要一个安全的地方来储存你的资产
+        </div>
+        <a 
+          href="https://github.com/ChengOrangeJu/WebExtensionWallet#webextensionwallet"
+          target="_blank"
+        >
+          <button class="install-button">安装 webExtensionWallet 插件</button>
+        </a>
       </section>
       <footer>
         <div 
@@ -81,6 +77,7 @@
 </template>
 <script>
 import numeral from 'numeral';
+import nebpay from 'nebpay.js';
 import { BreedingRhombusSpinner } from 'epic-spinners';
 import { restoreAccountFromKey, parseNas, addLottery } from '../api/index';
 import { groups } from '../worldcup';
@@ -90,6 +87,8 @@ import modalCloseBackground from '../assets/modal-close.png';
 import modalSubmitBackground from '../assets/modal-submit.png';
 
 const values = require('lodash/values');
+
+console.log({ nebpay });
 
 export default {
   components: { Spinner: BreedingRhombusSpinner },
@@ -120,6 +119,7 @@ export default {
       this.password = '';
       this.lottery = '';
       this.accountState = null;
+      this.hash = null;
 
       this.$store.commit('closeAddLotteryModal');
     },
@@ -178,10 +178,6 @@ export default {
         message.error('尚未选择球队');
         return;
       }
-      if (!this.accountState) {
-        message.error('尚未导入账号');
-        return;
-      }
       if (!this.lottery || !this.lottery.trim()) {
         message.error('尚未输入竞猜金额');
         return;
@@ -195,29 +191,24 @@ export default {
         message.error('请输入0.01~100的数字，最多8位小数');
         return;
       }
-      const { state } = this.accountState || {};
-      if (!state) {
-        message.error('账号信息有误');
-        return;
-      }
-      const balance = parseNas(state.balance);
-      if (lottery > balance) {
-        message.error('竞猜金额已超过您的账户余额');
-        return;
-      }
       this.loading = true;
-      addLottery(this.teamKey, this.accountState.account, lottery).then((res) => {
+      setTimeout(() => {
         this.loading = false;
+      }, 2000);
+      addLottery(this.teamKey, lottery).then((res) => {
         message.success('竞猜提交成功，请稍后查询您的竞猜情况');
         this.hash = res.txhash;
       }).catch((err) => {
-        this.loading = false;
         message.error(`竞猜提交失败 (${err.message})`);
         console.error(err);
       });
     },
   },
   computed: {
+    isWebExtensionInstalled() {
+      // return false;
+      return typeof (webExtensionWallet) !== 'undefined';
+    },
     groupList() {
       return values(groups).map((group) => {
         const data = {
@@ -437,6 +428,42 @@ export default {
       }
     }
 
+    section.install {
+      padding: 64px;
+
+
+      .install-hint {
+        margin: 0 auto 30px;
+        width: 370px;
+        height: 50px;
+        box-sizing: border-box;
+        font-size: 20px;
+        text-align: center;
+      }
+      
+      .install-button {
+        display: block;
+        margin: 0 auto;
+        width: 370px;
+        height: 50px;
+        box-sizing: border-box;
+        background-color: #E6D3A6;
+        -webkit-appearance: none;
+        outline: none;
+        border: none;
+        font-size: 20px;
+        text-align: center;
+
+        &:active {
+          background-color: darken(#E6D3A6, 10%);
+        }
+      }
+      a {
+        text-decoration: none;
+        color: #000000;
+      }
+    }
+
     section.account {
       padding: 64px;
 
@@ -465,6 +492,15 @@ export default {
             font-size: 20px;
           }
         }
+      }
+
+      .lottery-hint {
+        margin: 0 auto 30px;
+        width: 450px;
+        height: 50px;
+        font-size: 20px;
+        text-align: center;
+        box-sizing: border-box;
       }
 
       .account-state {
