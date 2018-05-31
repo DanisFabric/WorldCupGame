@@ -46,7 +46,7 @@
           </div>
         </div>
       </section>
-      <section class="account" v-else-if="isWebExtensionInstalled">
+      <section class="account" v-else-if="isWebExtensionInstalled()">
         <div class="lottery-hint">
           请填入金额参与竞猜，同一个账户只能竞猜一次哦
         </div>
@@ -203,12 +203,11 @@ export default {
         console.error(err);
       });
     },
-  },
-  computed: {
     isWebExtensionInstalled() {
-      // return false;
       return typeof (webExtensionWallet) !== 'undefined';
     },
+  },
+  computed: {
     groupList() {
       return values(groups).map((group) => {
         const data = {
