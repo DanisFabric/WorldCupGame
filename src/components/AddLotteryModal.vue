@@ -196,7 +196,11 @@ export default {
         this.loading = false;
       }, 2000);
       addLottery(this.teamKey, lottery).then((res) => {
-        message.success('竞猜提交成功，请稍后查询您的竞猜情况');
+        if (res.txhash === undefined) {
+          message.success('提交失败 ' + res);
+        } else {
+          message.success('竞猜提交成功，请稍后查询您的竞猜情况');
+        }
         this.hash = res.txhash;
       }).catch((err) => {
         message.error(`竞猜提交失败 (${err.message})`);
